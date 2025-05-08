@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('configs', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
             $table->id();
+            $table->integer('category_id')->nullable();
             $table->text('name')->nullable();
-            $table->text('color1')->nullable();
-            $table->text('color2')->nullable();
-            $table->text('color_font')->nullable();
-            $table->text('color_category')->nullable();
-            $table->text('image_bg')->nullable();
-            $table->text('image_qr')->nullable();
-            $table->text('promptpay')->nullable();
+            $table->text('price')->nullable();
+            $table->date('date')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('configs');
+        Schema::dropIfExists('expenses');
     }
 };
