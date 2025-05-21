@@ -409,7 +409,10 @@
 
                     // เคลียร์ checkbox
                     const checkboxes = offcanvasEl.querySelectorAll('input.option-checkbox');
-                    checkboxes.forEach(checkbox => checkbox.checked = false);
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                        checkbox.removeAttribute('disabled'); // ✅ เปิดการใช้งาน checkbox
+                    });
 
                     // เคลียร์ textarea
                     const noteField = offcanvasEl.querySelector(`#note_${productId}`);
@@ -564,6 +567,8 @@
                                     } else {
                                         addToCartBtn?.removeAttribute(
                                             'hidden');
+                                        addToCartBtn?.removeAttribute(
+                                            'disabled');
                                         backMenuBtn?.setAttribute('hidden',
                                             true);
                                     }
@@ -881,36 +886,35 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-    const hash = window.location.hash;
+        document.addEventListener("DOMContentLoaded", function() {
+            const hash = window.location.hash;
 
-    if (hash && hash.startsWith('#select-')) {
-        const [idPart, uuidPart] = hash.replace('#select-', '').split('&uuid=');
-        const itemId = idPart;
-        const itemUuid = uuidPart;
+            if (hash && hash.startsWith('#select-')) {
+                const [idPart, uuidPart] = hash.replace('#select-', '').split('&uuid=');
+                const itemId = idPart;
+                const itemUuid = uuidPart;
 
-        const card = document.querySelector(`[data-id="${itemId}"]`);
-        if (card) {
-            card.click();
+                const card = document.querySelector(`[data-id="${itemId}"]`);
+                if (card) {
+                    card.click();
 
-            // รอให้ .item-card ถูกสร้างก่อนค่อยคลิก
-            setTimeout(() => {
-                const listItem = document.querySelector(`[data-uuid="${itemUuid}"]`);
-                if (listItem) {
-                    const inner = listItem.querySelector('.cursor-pointer');
-                    if (inner) {
-                        inner.click();
-                        console.log("✅ คลิก cursor-pointer สำเร็จ");
-                    } else {
-                        console.warn("⚠️ ไม่พบ .cursor-pointer ภายใน listItem");
-                    }
-                } else {
-                    console.warn("❌ ไม่พบ listItem ด้วย data-uuid:", itemUuid);
+                    // รอให้ .item-card ถูกสร้างก่อนค่อยคลิก
+                    setTimeout(() => {
+                        const listItem = document.querySelector(`[data-uuid="${itemUuid}"]`);
+                        if (listItem) {
+                            const inner = listItem.querySelector('.cursor-pointer');
+                            if (inner) {
+                                inner.click();
+                                console.log("✅ คลิก cursor-pointer สำเร็จ");
+                            } else {
+                                console.warn("⚠️ ไม่พบ .cursor-pointer ภายใน listItem");
+                            }
+                        } else {
+                            console.warn("❌ ไม่พบ listItem ด้วย data-uuid:", itemUuid);
+                        }
+                    }, 500); // คุณอาจต้องลองปรับให้เหมาะกับการโหลดจริง
                 }
-            }, 500); // คุณอาจต้องลองปรับให้เหมาะกับการโหลดจริง
-        }
-    }
-});
-
+            }
+        });
     </script>
 @endsection
